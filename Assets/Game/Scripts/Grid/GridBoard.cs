@@ -30,6 +30,7 @@ public class GridBoard : SingletonMonobehaviour<GridBoard>
         SetupSpawnData();
     }
 
+    #region Position
     public Vector3Int GetPositionWorldToCell(Vector3 p_position) {
         return _tilemapWalkable.WorldToCell(p_position);
     }
@@ -41,6 +42,7 @@ public class GridBoard : SingletonMonobehaviour<GridBoard>
     public Vector3 GetPositionWorldToWorld(Vector3 p_position) {
         return GetPositionCellToWorld(GetPositionWorldToCell(p_position));
     }
+    #endregion
 
     #region Walkable
     void SetupWalkableData() {
@@ -101,6 +103,10 @@ public class GridBoard : SingletonMonobehaviour<GridBoard>
             return _spawnGridData[p_character];
         }
         return Vector3Int.zero;
+    }
+
+    public Vector3 GetSpawnWorldPosition(Character p_character) {
+        return GetPositionCellToWorld(GetSpawnCellPosition(p_character));
     }
     #endregion
 }

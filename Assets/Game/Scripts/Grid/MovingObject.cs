@@ -15,23 +15,7 @@ public class MovingObject : MonoBehaviour
     void Start() {
         var cellPosition = GridBoard.Instance.GetPositionWorldToCell(transform.position);
         transform.position = GridBoard.Instance.GetPositionCellToWorld(cellPosition);
-        // OnMovedToCell += KeepMoving;
     }
-
-    // void Update() {
-    //     if (Input.GetKeyDown(KeyCode.UpArrow)) {
-    //         ChangeDirection(Vector2Int.up);
-    //     }
-    //     if (Input.GetKeyDown(KeyCode.DownArrow)) {
-    //         ChangeDirection(Vector2Int.down);
-    //     }
-    //     if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-    //         ChangeDirection(Vector2Int.left);
-    //     }
-    //     if (Input.GetKeyDown(KeyCode.RightArrow)) {
-    //         ChangeDirection(Vector2Int.right);
-    //     }
-    // }
 
     #region Protected Methods
     protected void ChangeDirection(Vector2Int p_direction) {
