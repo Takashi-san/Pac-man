@@ -30,6 +30,18 @@ public class GridBoard : SingletonMonobehaviour<GridBoard>
         SetupSpawnData();
     }
 
+    public Vector3Int GetPositionWorldToCell(Vector3 p_position) {
+        return _tilemapWalkable.WorldToCell(p_position);
+    }
+
+    public Vector3 GetPositionCellToWorld(Vector3Int p_position) {
+        return _tilemapWalkable.GetCellCenterWorld(p_position);
+    }
+
+    public Vector3 GetPositionWorldToWorld(Vector3 p_position) {
+        return GetPositionCellToWorld(GetPositionWorldToCell(p_position));
+    }
+
     #region Walkable
     void SetupWalkableData() {
         _walkableGridData = new Dictionary<Vector3Int, bool>();
@@ -84,15 +96,11 @@ public class GridBoard : SingletonMonobehaviour<GridBoard>
         }
     }
 
-    public Vector3Int GetSpawnGridPosition(Character p_character) {
+    public Vector3Int GetSpawnCellPosition(Character p_character) {
         if (_spawnGridData.ContainsKey(p_character)) {
             return _spawnGridData[p_character];
         }
         return Vector3Int.zero;
-    }
-
-    public Vector3 GetSpawnWorldPosition(Character p_character) {
-        return _tilemapSpawns.CellToWorld(GetSpawnGridPosition(p_character));
     }
     #endregion
 }
