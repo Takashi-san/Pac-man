@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class CollectableItem : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    void GotItem() {
+        Destroy(gameObject);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+    
+    void OnTriggerEnter2D(Collider2D p_other) {
+        PacMan pacman = p_other.GetComponent<PacMan>();
+        if (pacman != null) {
+            GotItem();
+        }
     }
 }
