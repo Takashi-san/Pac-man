@@ -5,6 +5,8 @@ using UnityEngine;
 public class GameplayManager : SingletonMonobehaviour<GameplayManager>
 {
     public event System.Action<float> OnGotBigPellet;
+    public event System.Action<bool> OnGameEnded;
+    public event System.Action OnGameStarted;
     
     [HideInInspector] public PacMan Pacman = null;
 
@@ -29,7 +31,16 @@ public class GameplayManager : SingletonMonobehaviour<GameplayManager>
 
         position = GridBoard.Instance.GetSpawnWorldPosition(Character.Blinky);
         Ghost ghost = Instantiate(_blinkyPrefab, position, Quaternion.identity).GetComponent<Ghost>();
+        ghost.ChangeState(Ghost.State.Waiting);
         _ghosts.Add(ghost);
+    }
+
+    public void StartGame() {
+        foreach (var ghost in _ghosts) {
+            ghost.ChangeState(Ghost.State.MoveOutRespawn);
+        }
+
+        OnGameStarted?.Invoke();
     }
 
     public void GotBigPellet() {
@@ -53,9 +64,11 @@ public class GameplayManager : SingletonMonobehaviour<GameplayManager>
 
     void LoseGame() {
         print("Lose");
+        OnGameEnded?.Invoke(false);
     }
 
     void WinGame() {
         print("Win");
+        OnGameEnded?.Invoke(true);
     }
 }

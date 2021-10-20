@@ -26,8 +26,7 @@ public class Ghost : MovingObject
         _speed = _behaviour.Speed;
 
         GameplayManager.Instance.OnGotBigPellet += BecomeFrightened;
-
-        AvaliateNextStep();
+        GameplayManager.Instance.OnGameEnded += OnGameEnded;
     }
 
     void Update() {
@@ -110,6 +109,11 @@ public class Ghost : MovingObject
         ChangeState(State.Frightened);
         StopFrightenedCoroutine();
         _frightenedCoroutine = StartCoroutine(WaitFrightenedDuration(p_duration));
+    }
+
+    void OnGameEnded(bool p_won) {
+        StopFrightenedCoroutine();
+        StopMoving();
     }
 
     void AvaliateNextStep() {
