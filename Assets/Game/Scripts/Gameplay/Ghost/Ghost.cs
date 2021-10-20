@@ -16,13 +16,17 @@ public class Ghost : MovingObject
     public event System.Action OnGotEaten;
 
     [SerializeField] GhostBehaviour _behaviour = null;
-    
     [SerializeField] State _state = State.Scatter;
     List<State> _backWalkable = new List<State>{State.Waiting, State.MoveOutRespawn};
+    List<State> _frightenedAllowed = new List<State>{State.Chase, State.Scatter, State.Frightened};
+    Coroutine _frightenedCoroutine = null;
     
     void Start() {
         OnMovedToCell += AvaliateNextStep;
         _speed = _behaviour.Speed;
+
+        GameplayManager.Instance.OnGotBigPellet += BecomeFrightened;
+
         AvaliateNextStep();
     }
 
@@ -52,12 +56,16 @@ public class Ghost : MovingObject
             return;
         }
         print($"[ghost] change state to: {p_state}");
+        if (_state == State.Frightened) {
+            StopFrightenedCoroutine();
+        }
         _state = p_state;
         SetupWalkableOn();
 
         switch(_state) {
             case State.Chase:
             case State.Scatter:
+            case State.Frightened:
                 if (IsWalkableOnDirection(-(Vector3Int)MoveDirection)) {
                     ChangeDirection(-MoveDirection);
                     if (!IsMoving) {
@@ -86,6 +94,22 @@ public class Ghost : MovingObject
                 _walkableOn = new List<TerrainType>{TerrainType.Walkable, TerrainType.Teleport};
                 break;
         }
+    }
+
+    void StopFrightenedCoroutine() {
+        if (_frightenedCoroutine != null) {
+            StopCoroutine(_frightenedCoroutine);
+        }
+    }
+    
+    void BecomeFrightened(float p_duration) {
+        if (!_frightenedAllowed.Contains(_state)) {
+            return;
+        }
+        
+        ChangeState(State.Frightened);
+        StopFrightenedCoroutine();
+        _frightenedCoroutine = StartCoroutine(WaitFrightenedDuration(p_duration));
     }
 
     void AvaliateNextStep() {
@@ -217,16 +241,27 @@ public class Ghost : MovingObject
         ChangeState(State.MoveOutRespawn);
     }
 
+    IEnumerator WaitFrightenedDuration(float p_duration) {
+        yield return new WaitForSeconds(p_duration);
+        ChangeState(State.Chase); // get state from gameplay.
+        _frightenedCoroutine = null;
+    }
+
     void GotEaten() {
-        //eaten logic.
+        StopFrightenedCoroutine();
         ChangeState(State.Eaten);
         OnGotEaten?.Invoke();
     }
     
     private void OnTriggerEnter2D(Collider2D p_other) {
         PacMan pacman = p_other.GetComponent<PacMan>();
-        if (pacman != null && _state == State.Frightened) {
-            GotEaten();
+        if (pacman != null) {
+            if (_state == State.Frightened) {
+                GotEaten();
+            }
+            else if (_state != State.Eaten) {
+                pacman.Die();
+            }
         }
     }
 }

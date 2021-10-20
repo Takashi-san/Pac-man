@@ -211,45 +211,65 @@ Tilemap:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 57372709}
   m_Enabled: 1
-  m_Tiles: {}
+  m_Tiles:
+  - first: {x: 4, y: -2, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 1
+      m_TileSpriteIndex: 1
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 1
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741826
+  - first: {x: -5, y: 3, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 1
+      m_TileSpriteIndex: 1
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 1
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741826
   m_AnimatedTiles: {}
   m_TileAssetArray:
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 2
+    m_Data: {fileID: 11400000, guid: 2b9d5160f2925f345b01ae219f1a7041, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 2
+    m_Data: {fileID: 21300000, guid: f89b9227afbfea84b93ee3befea3e75e, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 0
+  - m_RefCount: 2
     m_Data:
-      e00: 1.084227e-19
-      e01: 0.0056678206
-      e02: 0.005667411
-      e03: 0.005667411
-      e10: 7.88e-43
-      e11: 2.45e-43
-      e12: 2.45e-43
-      e13: 2.45e-43
-      e20: -3.5647593e-17
-      e21: -1.0878397e-19
-      e22: -3.9411564
-      e23: -1.0878397e-19
-      e30: 4.5904e-41
-      e31: 7.89e-43
-      e32: 7.86e-43
-      e33: 7.89e-43
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
   m_TileColorArray:
-  - m_RefCount: 0
-    m_Data: {r: -1.087757e-19, g: -1.087757e-19, b: -1.087757e-19, a: -1.087757e-19}
+  - m_RefCount: 2
+    m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray:
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 2
+    m_Data: {fileID: 8506319730286905196, guid: b04dc16826bf74e44935a5712abaf53c, type: 3}
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: -5, y: -4, z: 0}
@@ -395,6 +415,7 @@ MonoBehaviour:
   Pacman: {fileID: 0}
   _pacmanPrefab: {fileID: 8506319730286905196, guid: c147ab991958eff49bd3dddff0af7688, type: 3}
   _blinkyPrefab: {fileID: 8506319730286905196, guid: 977b0a1a59d430c42afe4d55cddaad56, type: 3}
+  _frightenedDuration: 1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

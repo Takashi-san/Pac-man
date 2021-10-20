@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class CollectableItem : MonoBehaviour
 {
+    [SerializeField] CollectableItemType _itemType = null;
+    
+    void Start() {
+        _itemType.Setup(gameObject);
+    }
+    
     void GotItem() {
+        _itemType.ItemEffect(gameObject);
         Destroy(gameObject);
     }
     

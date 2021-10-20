@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class PacMan : MovingObject
 {
+    public event System.Action OnDie;
+    
+    public void Die() {
+        OnDie?.Invoke();
+        StopMoving();
+    }
+    
     void Start() {
         OnMovedToCell += KeepMoving;
     }
