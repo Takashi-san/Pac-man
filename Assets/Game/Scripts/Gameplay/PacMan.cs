@@ -12,13 +12,13 @@ public class PacMan : MovingObject
         if (Input.GetKeyDown(KeyCode.UpArrow)) {
             ChangeDirection(Vector2Int.up);
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow)) {
+        else if (Input.GetKeyDown(KeyCode.DownArrow)) {
             ChangeDirection(Vector2Int.down);
         }
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+        else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
             ChangeDirection(Vector2Int.left);
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow)) {
+        else if (Input.GetKeyDown(KeyCode.RightArrow)) {
             ChangeDirection(Vector2Int.right);
         }
     }

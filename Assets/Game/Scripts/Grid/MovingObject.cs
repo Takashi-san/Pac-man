@@ -6,8 +6,10 @@ public class MovingObject : MonoBehaviour
 {
     public event System.Action OnMovedToCell;
     public bool IsMoving => _moveCoroutine != null;
+    public Vector2Int MoveDirection => (Vector2Int)_moveDirection;
     
     [SerializeField] protected float _speed = 1;
+    protected List<TerrainType> _walkableOn = new List<TerrainType>{TerrainType.Walkable, TerrainType.Teleport};
     Vector3Int _moveDirection = Vector3Int.up;
     Vector3Int _desiredDirection = Vector3Int.up;
     Coroutine _moveCoroutine = null;
@@ -35,6 +37,12 @@ public class MovingObject : MonoBehaviour
             StartMoveToCell(GetCellOnDirection(_moveDirection));
         }
     }
+
+    protected void StopMoving() {
+        if (_moveCoroutine != null) {
+            StopCoroutine(_moveCoroutine);
+        }
+    }
     #endregion
 
     #region Bool checks
@@ -55,8 +63,8 @@ public class MovingObject : MonoBehaviour
         return p_direction == _moveDirection || p_direction == -_moveDirection;
     }
 
-    bool IsWalkableOnDirection(Vector3Int p_direction) {
-        return GridBoard.Instance.IsTileWalkable(GetCellOnDirection(p_direction));
+    protected bool IsWalkableOnDirection(Vector3Int p_direction) {
+        return GridBoard.Instance.IsTileWalkable(GetCellOnDirection(p_direction), _walkableOn);
     }
     #endregion
 
@@ -83,9 +91,7 @@ public class MovingObject : MonoBehaviour
 
     #region Movement
     void StartMoveToCell(Vector3Int p_cellPosition) {
-        if (_moveCoroutine != null) {
-            StopCoroutine(_moveCoroutine);
-        }
+        StopMoving();
         _moveCoroutine = StartCoroutine(MoveToCell(p_cellPosition));
     }
 

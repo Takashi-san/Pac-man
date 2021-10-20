@@ -5,3 +5,10 @@ public enum Character {
     Inky,
     Clyde
 }
+
+public enum TerrainType {
+    Walkable,
+    Wall,
+    RespawnWall,
+    Teleport
+}

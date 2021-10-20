@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class GameplayManager : SingletonMonobehaviour<GameplayManager>
 {
+    [HideInInspector] public PacMan Pacman = null;
+
     [SerializeField] GameObject _pacmanPrefab = null;
+    [SerializeField] GameObject _blinkyPrefab = null;
     
     void Start() {
         SetupCharacters();
@@ -12,6 +15,9 @@ public class GameplayManager : SingletonMonobehaviour<GameplayManager>
     
     void SetupCharacters() {
         Vector3 position = GridBoard.Instance.GetSpawnWorldPosition(Character.Pacman);
-        Instantiate(_pacmanPrefab, position, Quaternion.identity);
+        Pacman = Instantiate(_pacmanPrefab, position, Quaternion.identity).GetComponent<PacMan>();
+
+        position = GridBoard.Instance.GetSpawnWorldPosition(Character.Blinky);
+        Instantiate(_blinkyPrefab, position, Quaternion.identity);
     }
 }
