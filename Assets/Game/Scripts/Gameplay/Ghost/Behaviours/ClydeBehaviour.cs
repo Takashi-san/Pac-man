@@ -2,17 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClydeBehaviour : MonoBehaviour
+[CreateAssetMenu(menuName="Ghost Behaviour/Clyde")]
+public class ClydeBehaviour : GhostBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public override Vector3Int GetChasePosition(GameObject p_owner) {
+        Vector3Int pacmanPosition = GridBoard.Instance.GetPositionWorldToCell(GameplayManager.Instance.Pacman.transform.position);
+        Vector3Int currentPosition = GridBoard.Instance.GetPositionWorldToCell(p_owner.transform.position);
+        Vector3Int diff = pacmanPosition - currentPosition;
+        int diffMag2 = diff.x * diff.x + diff.y * diff.y;
 
-    // Update is called once per frame
-    void Update()
-    {
+        Vector3Int desiredPosition = pacmanPosition;
+        if (diffMag2 < 64) {
+            desiredPosition = GridBoard.Instance.GetScatterCellPosition(Character.Blinky);
+        }
         
+        return desiredPosition;
     }
 }

@@ -18,7 +18,6 @@ public class GridBoard : SingletonMonobehaviour<GridBoard>
     [SerializeField] TileBase _tileSpawnPinky = null;
     [SerializeField] TileBase _tileSpawnInky = null;
     [SerializeField] TileBase _tileSpawnClyde = null;
-    [SerializeField] TileBase _tileRespawn = null;
 
     [Header("Scatter")]
     [SerializeField] Tilemap _tilemapScatter = null;
@@ -26,6 +25,7 @@ public class GridBoard : SingletonMonobehaviour<GridBoard>
     [SerializeField] TileBase _tileScatterPinky = null;
     [SerializeField] TileBase _tileScatterInky = null;
     [SerializeField] TileBase _tileScatterClyde = null;
+    [SerializeField] TileBase _tileRespawn = null;
 
     Dictionary<Vector3Int, TerrainType> _walkableGridData;
     Dictionary<Character, Vector3Int> _spawnGridData;
@@ -112,10 +112,6 @@ public class GridBoard : SingletonMonobehaviour<GridBoard>
                 _spawnGridData.Add(Character.Clyde, position);
                 continue;
             }
-            if (tileBase == _tileRespawn) {
-                _respawnGridData = position;
-                continue;
-            }
         }
     }
 
@@ -158,6 +154,10 @@ public class GridBoard : SingletonMonobehaviour<GridBoard>
             }
             if (tileBase == _tileScatterClyde) {
                 _scatterGridData.Add(Character.Clyde, position);
+                continue;
+            }
+            if (tileBase == _tileRespawn) {
+                _respawnGridData = position;
                 continue;
             }
         }

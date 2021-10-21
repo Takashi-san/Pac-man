@@ -2,17 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PinkyBehaviour : MonoBehaviour
+[CreateAssetMenu(menuName="Ghost Behaviour/Pinky")]
+public class PinkyBehaviour : GhostBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public override Vector3Int GetChasePosition(GameObject p_owner) {
+        Vector3Int pacmanPosition = GridBoard.Instance.GetPositionWorldToCell(GameplayManager.Instance.Pacman.transform.position);
+        Vector2Int pacmanDirection = GameplayManager.Instance.Pacman.MoveDirection;
+        Vector3Int desiredPosition = pacmanPosition + 4 * (Vector3Int)pacmanDirection;
+        return desiredPosition;
     }
 }

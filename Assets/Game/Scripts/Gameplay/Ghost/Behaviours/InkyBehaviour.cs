@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InkyBehaviour : MonoBehaviour
+[CreateAssetMenu(menuName="Ghost Behaviour/Inky")]
+public class InkyBehaviour : GhostBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
+    public override Vector3Int GetChasePosition(GameObject p_owner) {
+        Vector3Int pacmanPosition = GridBoard.Instance.GetPositionWorldToCell(GameplayManager.Instance.Pacman.transform.position);
+        Vector2Int pacmanDirection = GameplayManager.Instance.Pacman.MoveDirection;
+        Vector3Int desiredPosition = pacmanPosition + 2 * (Vector3Int)pacmanDirection;
         
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Vector3Int blinkyPosition = GameplayManager.Instance.GetGhostPosition(Character.Blinky);
+        Vector3Int diff = blinkyPosition - desiredPosition;
+        desiredPosition = desiredPosition - diff;
+        return desiredPosition;
     }
 }

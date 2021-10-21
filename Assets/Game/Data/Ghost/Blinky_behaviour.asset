@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Blinky_behaviour
   m_EditorClassIdentifier: 
   Ghost: 1
-  Speed: 3
-  RespawnTime: 3
+  Speed: 4
+  RespawnTime: 2

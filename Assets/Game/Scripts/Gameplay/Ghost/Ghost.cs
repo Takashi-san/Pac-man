@@ -14,11 +14,15 @@ public class Ghost : MovingObject
     }
 
     public event System.Action OnGotEaten;
+    public Character Character => _behaviour.Ghost;
 
     [SerializeField] GhostBehaviour _behaviour = null;
-    [SerializeField] State _state = State.Scatter;
+    [SerializeField] SpriteRenderer _visual = null;
+    [SerializeField] Color _originalColor = Color.white;
+    State _state = State.Scatter;
     List<State> _backWalkable = new List<State>{State.Waiting, State.MoveOutRespawn};
     List<State> _frightenedAllowed = new List<State>{State.Chase, State.Scatter, State.Frightened};
+    List<State> _gameplayDesireAllowed = new List<State>{State.Chase, State.Scatter};
     Coroutine _frightenedCoroutine = null;
     
     void Start() {
@@ -27,6 +31,7 @@ public class Ghost : MovingObject
 
         GameplayManager.Instance.OnGotBigPellet += BecomeFrightened;
         GameplayManager.Instance.OnGameEnded += OnGameEnded;
+        GameplayManager.Instance.OnChangeGhostDesiredState += OnChangeGhostDesiredState;
     }
 
     void Update() {
@@ -54,13 +59,27 @@ public class Ghost : MovingObject
         if (_state == p_state) {
             return;
         }
-        print($"[ghost] change state to: {p_state}");
+        // print($"[ghost] change state to: {p_state}");
         if (_state == State.Frightened) {
             StopFrightenedCoroutine();
         }
         _state = p_state;
         SetupWalkableOn();
 
+        switch(_state) {
+            case State.Frightened:
+                _visual.color = Color.black;
+                break;
+            
+            case State.Eaten:
+                _visual.color = Color.white;
+                break;
+            
+            default:
+                _visual.color = _originalColor;
+                break;
+        }
+        
         switch(_state) {
             case State.Chase:
             case State.Scatter:
@@ -116,13 +135,21 @@ public class Ghost : MovingObject
         StopMoving();
     }
 
+    void OnChangeGhostDesiredState(State p_state) {
+        if (!_gameplayDesireAllowed.Contains(_state)) {
+            return;
+        }
+        
+        ChangeState(p_state);
+    }
+
     void AvaliateNextStep() {
         Vector3Int desiredCell = Vector3Int.zero;
         Vector3Int position = GridBoard.Instance.GetPositionWorldToCell(transform.position);
 
         switch (_state) {
             case State.Chase:
-                desiredCell = _behaviour.GetChasePosition();
+                desiredCell = _behaviour.GetChasePosition(gameObject);
                 break;
             
             case State.Scatter:
@@ -146,14 +173,14 @@ public class Ghost : MovingObject
                 break;
             
             case State.Waiting:
-                desiredCell = GetWaitingPosition();
-                break;
+                // desiredCell = GetWaitingPosition();
+                StopMoving();
+                return;
             
             case State.MoveOutRespawn:
                 desiredCell = GridBoard.Instance.GetRespawnCellPosition();
                 if (position == desiredCell) {
-                    // check which state to go from gameplay manager. TODO
-                    ChangeState(State.Chase);
+                    ChangeState(GameplayManager.Instance.DesiredGhostState);
                 }
                 break;
         }
@@ -247,7 +274,7 @@ public class Ghost : MovingObject
 
     IEnumerator WaitFrightenedDuration(float p_duration) {
         yield return new WaitForSeconds(p_duration);
-        ChangeState(State.Chase); // get state from gameplay.
+        ChangeState(GameplayManager.Instance.DesiredGhostState);
         _frightenedCoroutine = null;
     }
 

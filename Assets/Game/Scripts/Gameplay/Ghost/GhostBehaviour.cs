@@ -9,5 +9,5 @@ public abstract class GhostBehaviour : ScriptableObject
     public float Speed;
     public float RespawnTime;
 
-    public abstract Vector3Int GetChasePosition();
+    public abstract Vector3Int GetChasePosition(GameObject p_owner);
 }

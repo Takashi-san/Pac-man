@@ -48,7 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 1
   _behaviour: {fileID: 11400000, guid: 6625f4fd4ca85cb4295bd968d19f4e59, type: 2}
-  _state: 4
+  _visual: {fileID: 8506319730286905187}
+  _originalColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!212 &8506319730286905187
 SpriteRenderer:
   m_ObjectHideFlags: 0

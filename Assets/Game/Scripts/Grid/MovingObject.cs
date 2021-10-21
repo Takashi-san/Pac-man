@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MovingObject : MonoBehaviour
 {
+    public static List<TerrainType> DefaultWalkable = new List<TerrainType>{TerrainType.Walkable, TerrainType.Teleport};
+    
     public event System.Action OnMovedToCell;
     public bool IsMoving => _moveCoroutine != null;
     public Vector2Int MoveDirection => (Vector2Int)_moveDirection;
